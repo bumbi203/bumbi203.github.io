@@ -129,7 +129,7 @@ Mình thấy có share ổ **`Shared`** mình truy cập thử 😎
 
 Sau đó mình đọc file mới lấy về. 
 
-![image.png](/assets/img/redteam/Recon/services/mage15.png)
+![image.png](/assets/img/redteam/Recon/services/image15.png)
 
 **`CBJS{dbadmin-dd4A5FMHk4s1D9VV-dbserver.cj23group.com}`** 
 
