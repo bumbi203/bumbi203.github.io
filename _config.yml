@@ -23,7 +23,7 @@ description: >- # used by seo meta and the atom feed
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
-url: "https://bumbi.github.io"
+url: "https://bumbi203.github.io"
 
 github:
   username: bumbi # change to your GitHub username
@@ -40,7 +40,7 @@ social:
   links:
     # The first element serves as the copyright owner's link
     # change to your Twitter homepage
-    - https://github.com/Bumbiworld # change to your GitHub homepage
+    - https://github.com/bumbi203 # change to your GitHub homepage
     # Uncomment below to add more social links
     - https://www.facebook.com/hoang.phuc7546
     - https://www.linkedin.com/in/v%C3%B5-ho%C3%A0ng-ph%C3%BAc-a29646334/
@@ -112,7 +112,7 @@ actions:
   # Display "Edit this post" action on each post page to encourage contributions.
   edit_post:
     enabled: false # set to true to display the "Edit this post" action.
-    url: "https://github.com/Bumbiworld/bumbiworld.github.io" # repository base URL, e.g. https://github.com/cotes2020/jekyll-theme-chirpy/edit/master
+    url: "https://github.com/bumbi203/bumbi203.github.io" # repository base URL, e.g. https://github.com/cotes2020/jekyll-theme-chirpy/edit/master
     # Use dynamic or static URL for the edit link.
     # If `static_url` is false, the post's path will be appended to the `url` above as the final edit link.
     # Set to true if the URL should remain unchanged, which means each post will share the same edit link.
